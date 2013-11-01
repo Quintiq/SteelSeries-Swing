@@ -27,12 +27,6 @@
  */
 package eu.hansolo.steelseries.gauges;
 
-import eu.hansolo.steelseries.tools.GlowImageFactory;
-import eu.hansolo.steelseries.tools.GradientWrapper;
-import eu.hansolo.steelseries.tools.LcdColor;
-import eu.hansolo.steelseries.tools.NumberSystem;
-import eu.hansolo.steelseries.tools.Section;
-import eu.hansolo.steelseries.tools.Util;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -61,11 +55,20 @@ import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.JComponent;
 import javax.swing.Timer;
 import javax.swing.border.Border;
+
 import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.ease.TimelineEase;
+
+import eu.hansolo.steelseries.tools.GlowImageFactory;
+import eu.hansolo.steelseries.tools.GradientWrapper;
+import eu.hansolo.steelseries.tools.LcdColor;
+import eu.hansolo.steelseries.tools.NumberSystem;
+import eu.hansolo.steelseries.tools.Section;
+import eu.hansolo.steelseries.tools.Util;
 
 /**
  *
@@ -394,7 +397,15 @@ public final class DisplaySingle extends JComponent implements Lcd, ActionListen
           }
         }
         sectionsBackground.add(create_LCD_Image(WIDTH, HEIGHT, BACKGROUND_COLORS));
-        sectionsForeground.add(FOREGROUND_COLOR);
+
+        if ( section.getTextColor() == null )
+        {
+          sectionsForeground.add(FOREGROUND_COLOR);
+        }
+        else
+        {
+          sectionsForeground.add(section.getTextColor());
+        }
       }
     }
 
@@ -873,7 +884,7 @@ public final class DisplaySingle extends JComponent implements Lcd, ActionListen
       timeline = new Timeline(this);
       timeline.addPropertyToInterpolate("lcdValue", this.lcdValue, LCD_VALUE);
       timeline.setEase(EASING);
-      timeline.setDuration((long) (2000));
+      timeline.setDuration(2000);
       timeline.play();
     }
   }

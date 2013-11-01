@@ -42,6 +42,7 @@ public class Section
   private double start;
   private double stop;
   private Color  color;
+  private Color  mTextColor;
   private Color  transparentColor;
   private Color  highlightColor;
   private Color  transparentHighlightColor;
@@ -80,9 +81,11 @@ public class Section
   public Section(final double START, final double STOP, final Color COLOR, final Color HIGHLIGHT_COLOR,
                  final Area SECTION_AREA, final Arc2D FILLED_AREA)
   {
+
     start = START;
     stop = STOP;
     color = COLOR;
+    mTextColor = null;
     transparentColor = Util.INSTANCE.setAlpha(COLOR, 0.25f);
     highlightColor = HIGHLIGHT_COLOR;
     transparentHighlightColor = Util.INSTANCE.setAlpha(HIGHLIGHT_COLOR, 0.5f);
@@ -128,6 +131,16 @@ public class Section
   {
     color = COLOR;
     transparentColor = Util.INSTANCE.setAlpha(COLOR, 0.25f);
+  }
+
+  public Color getTextColor()
+  {
+    return mTextColor;
+  }
+
+  public void setTextColor(Color textColor)
+  {
+    mTextColor = textColor;
   }
 
   public Color getHighlightColor()
