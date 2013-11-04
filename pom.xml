@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <!-- inherit some settings -->
   <parent>
@@ -7,9 +8,11 @@
     <version>6</version>
   </parent>
 
-  <groupId>eu.hansolo</groupId>
+  <!-- Updated to be able to deploy to our private Nexus. -->
+  <!--groupId>eu.hansolo</groupId -->
+  <groupId>com.quintiq.thirdparty</groupId>
   <artifactId>SteelSeries</artifactId>
-  <version>3.9.31-SNAPSHOT</version>
+  <version>3.9.33-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>SteelSeries</name>
@@ -38,16 +41,16 @@ digital displays, indicators from cars and some instruments from airplanes and
 sailboats.
   </description>
   <developers>
-      <developer>
-         <name>Gerrit Grunwald</name>
-         <email>han [DOT] solo [DOT] gg [AT] gmail [DOT] com</email>
-         <timezone>GMT +0100</timezone>
-         <url>http://www.harmonic-code.org</url>
-         <roles>
-            <role>project leader</role>
-         </roles>
-      </developer>
-   </developers>
+    <developer>
+      <name>Gerrit Grunwald</name>
+      <email>han [DOT] solo [DOT] gg [AT] gmail [DOT] com</email>
+      <timezone>GMT +0100</timezone>
+      <url>http://www.harmonic-code.org</url>
+      <roles>
+        <role>project leader</role>
+      </roles>
+    </developer>
+  </developers>
   <licenses>
     <license>
       <name>BSD license</name>
@@ -68,10 +71,10 @@ sailboats.
         <artifactId>maven-compiler-plugin</artifactId>
         <version>2.3.2</version>
         <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                    <debug>false</debug>
-                </configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+          <debug>false</debug>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-release-plugin</artifactId>
@@ -80,12 +83,11 @@ sailboats.
           <!-- gpg may hang when requesting passphrase otherwise -->
           <mavenExecutorId>forked-path</mavenExecutorId>
           <connectionType>connection</connectionType>
-          <!--
-            During release:perform, enable the "release" profile
-           -->
+          <!-- During release:perform, enable the "release" profile -->
           <releaseProfiles>release</releaseProfiles>
           <preparationGoals>clean install</preparationGoals>
-          <!-- normally you really want that and avoid uploading all the shit again! -->
+          <!-- normally you really want that and avoid uploading all the 
+            shit again! -->
           <remoteTagging>false</remoteTagging>
         </configuration>
       </plugin>
@@ -93,47 +95,32 @@ sailboats.
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
         <version>2.1.2</version>
-          <executions>
-            <execution>
-              <id>attach-sources</id>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-            </execution>
-          </executions>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>2.7</version>
-          <executions>
-            <execution>
-              <id>attach-javadocs</id>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-            </execution>
-          </executions>
-        </plugin>
-      <!--
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>buildnumber-maven-plugin</artifactId>
-        <version>1.0-beta-4</version>
         <executions>
           <execution>
-            <phase>validate</phase>
+            <id>attach-javadocs</id>
             <goals>
-              <goal>create</goal>
+              <goal>jar</goal>
             </goals>
           </execution>
         </executions>
-        <configuration>
-          <doCheck>false</doCheck>
-          <doUpdate>true</doUpdate>
-        </configuration>
       </plugin>
-      -->
+      <!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>buildnumber-maven-plugin</artifactId> 
+        <version>1.0-beta-4</version> <executions> <execution> <phase>validate</phase> 
+        <goals> <goal>create</goal> </goals> </execution> </executions> <configuration> 
+        <doCheck>false</doCheck> <doUpdate>true</doUpdate> </configuration> </plugin> -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
@@ -141,44 +128,57 @@ sailboats.
         <configuration>
           <archive>
             <compress>true</compress>
-              <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
-              <index>true</index>
-              <manifestEntries>
-                <SCM-Revision>${buildNumber}</SCM-Revision>
-              </manifestEntries>
-            </archive>
-          </configuration>
+            <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+            <index>true</index>
+            <manifestEntries>
+              <SCM-Revision>${buildNumber}</SCM-Revision>
+            </manifestEntries>
+          </archive>
+        </configuration>
       </plugin>
     </plugins>
   </build>
 
   <profiles>
-  <profile>
-    <id>release-sign-artifacts</id>
-    <activation>
-      <property>
-        <name>performRelease</name>
-        <value>true</value>
-      </property>
-    </activation>
-    <build>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-gpg-plugin</artifactId>
-          <version>1.1</version>
-          <executions>
-            <execution>
-              <id>sign-artifacts</id>
-              <phase>verify</phase>
-              <goals>
-                <goal>sign</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-      </plugins>
-    </build>
-  </profile>
-</profiles>
+    <profile>
+      <id>release-sign-artifacts</id>
+      <activation>
+        <property>
+          <name>performRelease</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.1</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+  <distributionManagement>
+    <repository>
+      <id>releases</id>
+      <name>Releases</name>
+      <url>http://rend-maven.quintiq.nl/nexus/content/repositories/releases</url>
+    </repository>
+    <snapshotRepository>
+      <id>snapshots</id>
+      <name>Snapshots</name>
+      <url>http://rend-maven.quintiq.nl/nexus/content/repositories/snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
 </project>
