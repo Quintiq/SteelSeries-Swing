@@ -27,32 +27,6 @@
  */
 package eu.hansolo.steelseries.gauges;
 
-import eu.hansolo.steelseries.tools.ColorDef;
-import eu.hansolo.steelseries.tools.ConicalGradientPaint;
-import eu.hansolo.steelseries.tools.CustomColorDef;
-import eu.hansolo.steelseries.tools.Direction;
-import eu.hansolo.steelseries.tools.ForegroundType;
-import eu.hansolo.steelseries.tools.FrameType;
-import eu.hansolo.steelseries.tools.GaugeType;
-import eu.hansolo.steelseries.tools.KnobStyle;
-import eu.hansolo.steelseries.tools.KnobType;
-import eu.hansolo.steelseries.tools.LcdColor;
-import eu.hansolo.steelseries.tools.NumberSystem;
-import eu.hansolo.steelseries.tools.Orientation;
-import eu.hansolo.steelseries.tools.PointerType;
-import eu.hansolo.steelseries.tools.PostPosition;
-import eu.hansolo.steelseries.tools.TicklabelOrientation;
-import eu.hansolo.steelseries.tools.Util;
-import org.pushingpixels.trident.Timeline;
-import org.pushingpixels.trident.TimelineScenario;
-import org.pushingpixels.trident.callback.TimelineCallback;
-import org.pushingpixels.trident.ease.Sine;
-import org.pushingpixels.trident.ease.Spline;
-import org.pushingpixels.trident.ease.TimelineEase;
-
-import javax.swing.SwingConstants;
-import javax.swing.Timer;
-import javax.swing.border.Border;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Container;
@@ -80,6 +54,34 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.swing.SwingConstants;
+import javax.swing.Timer;
+import javax.swing.border.Border;
+
+import org.pushingpixels.trident.Timeline;
+import org.pushingpixels.trident.TimelineScenario;
+import org.pushingpixels.trident.callback.TimelineCallback;
+import org.pushingpixels.trident.ease.Sine;
+import org.pushingpixels.trident.ease.Spline;
+import org.pushingpixels.trident.ease.TimelineEase;
+
+import eu.hansolo.steelseries.tools.ColorDef;
+import eu.hansolo.steelseries.tools.ConicalGradientPaint;
+import eu.hansolo.steelseries.tools.CustomColorDef;
+import eu.hansolo.steelseries.tools.Direction;
+import eu.hansolo.steelseries.tools.ForegroundType;
+import eu.hansolo.steelseries.tools.FrameType;
+import eu.hansolo.steelseries.tools.GaugeType;
+import eu.hansolo.steelseries.tools.KnobStyle;
+import eu.hansolo.steelseries.tools.KnobType;
+import eu.hansolo.steelseries.tools.LcdColor;
+import eu.hansolo.steelseries.tools.NumberSystem;
+import eu.hansolo.steelseries.tools.Orientation;
+import eu.hansolo.steelseries.tools.PointerType;
+import eu.hansolo.steelseries.tools.PostPosition;
+import eu.hansolo.steelseries.tools.TicklabelOrientation;
+import eu.hansolo.steelseries.tools.Util;
 
 /**
  *
@@ -1470,14 +1472,16 @@ public abstract class AbstractRadial extends AbstractGauge implements Lcd
         G2.setColor(getModel().getLabelColor());
       }
 
+      double rawscale = 0.04672897196261682 * IMAGE_WIDTH;
       // Use custom font if selected
       if ( isTitleAndUnitFontEnabled() )
       {
-        G2.setFont(new Font(getTitleAndUnitFont().getFamily(), 0, (int) (0.04672897196261682 * IMAGE_WIDTH)));
+        // Changed: Make the set font also scale.
+        G2.setFont(new Font(getTitleAndUnitFont().getFamily(), 0, (int) (rawscale * getTitleAndUnitFontScale())));
       }
       else
       {
-        G2.setFont(new Font("Verdana", 0, (int) (0.04672897196261682 * IMAGE_WIDTH)));
+        G2.setFont(new Font("Verdana", 0, (int) rawscale));
       }
       final TextLayout TITLE_LAYOUT = new TextLayout(TITLE, G2.getFont(), RENDER_CONTEXT);
       final Rectangle2D TITLE_BOUNDARY = TITLE_LAYOUT.getBounds();
@@ -1596,15 +1600,16 @@ public abstract class AbstractRadial extends AbstractGauge implements Lcd
         G2.setColor(getLabelColor());
       }
 
+      double rawscale = 0.04672897196261682 * IMAGE_WIDTH;
       // Use custom font if selected
       if ( isTitleAndUnitFontEnabled() )
       {
-        G2.setFont(new Font(getTitleAndUnitFont().getFamily(), getTitleAndUnitFont().getStyle(), getTitleAndUnitFont()
-            .getSize()));
+        G2.setFont(new Font(getTitleAndUnitFont().getFamily(), getTitleAndUnitFont().getStyle(),
+            (int) (rawscale * getTitleAndUnitFontScale())));
       }
       else
       {
-        G2.setFont(new Font("Verdana", 0, (int) (0.04672897196261682 * IMAGE_WIDTH)));
+        G2.setFont(new Font("Verdana", 0, (int) rawscale));
       }
       final TextLayout TITLE_LAYOUT = new TextLayout(TITLE, G2.getFont(), RENDER_CONTEXT);
       final Rectangle2D TITLE_BOUNDARY = TITLE_LAYOUT.getBounds();

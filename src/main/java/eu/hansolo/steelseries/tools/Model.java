@@ -38,6 +38,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.EventListenerList;
 
@@ -80,6 +81,7 @@ public class Model implements Cloneable
   private boolean                 titleVisible;
   private boolean                 unitVisible;
   private boolean                 customTitleAndUnitFontEnabled;
+  private double                  customTitleAndUnitFontScale;
   private boolean                 customLayerVisible;
   private boolean                 ledVisible;
   private boolean                 userLedVisible;
@@ -222,6 +224,7 @@ public class Model implements Cloneable
     titleVisible = true;
     unitVisible = true;
     customTitleAndUnitFontEnabled = false;
+    customTitleAndUnitFontScale = 1;
     customLayerVisible = false;
     ledVisible = true;
     lcdVisible = true;
@@ -828,6 +831,19 @@ public class Model implements Cloneable
     customTitleAndUnitFontEnabled = CUSTOM_TITLE_AND_UNIT_FONT_ENABLED;
     fireStateChanged();
   }
+
+  public double getCustomTitleAndUnitFontScale()
+  {
+    return customTitleAndUnitFontScale;
+  }
+
+
+  public void setCustomTitleAndUnitFontScale(double customTitleAndUnitFontScale)
+  {
+    this.customTitleAndUnitFontScale = customTitleAndUnitFontScale;
+    fireStateChanged();
+  }
+
 
   /**
    * Returns true if the custom layer of the gauge is visible

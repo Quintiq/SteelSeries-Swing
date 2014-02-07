@@ -27,21 +27,6 @@
  */
 package eu.hansolo.steelseries.gauges;
 
-import eu.hansolo.steelseries.tools.ColorDef;
-import eu.hansolo.steelseries.tools.CustomColorDef;
-import eu.hansolo.steelseries.tools.LcdColor;
-import eu.hansolo.steelseries.tools.NumberSystem;
-import eu.hansolo.steelseries.tools.Orientation;
-import eu.hansolo.steelseries.tools.Util;
-import org.pushingpixels.trident.Timeline;
-import org.pushingpixels.trident.TimelineScenario;
-import org.pushingpixels.trident.callback.TimelineCallback;
-import org.pushingpixels.trident.ease.Sine;
-import org.pushingpixels.trident.ease.Spline;
-import org.pushingpixels.trident.ease.TimelineEase;
-
-import javax.swing.Timer;
-import javax.swing.border.Border;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Container;
@@ -65,6 +50,23 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+
+import javax.swing.Timer;
+import javax.swing.border.Border;
+
+import org.pushingpixels.trident.Timeline;
+import org.pushingpixels.trident.TimelineScenario;
+import org.pushingpixels.trident.callback.TimelineCallback;
+import org.pushingpixels.trident.ease.Sine;
+import org.pushingpixels.trident.ease.Spline;
+import org.pushingpixels.trident.ease.TimelineEase;
+
+import eu.hansolo.steelseries.tools.ColorDef;
+import eu.hansolo.steelseries.tools.CustomColorDef;
+import eu.hansolo.steelseries.tools.LcdColor;
+import eu.hansolo.steelseries.tools.NumberSystem;
+import eu.hansolo.steelseries.tools.Orientation;
+import eu.hansolo.steelseries.tools.Util;
 
 /**
  *
@@ -1262,14 +1264,16 @@ public abstract class AbstractLinear extends AbstractGauge implements Lcd, Actio
       // Vertical orientation
       // Draw title
       // Use custom font if selected
+      double rawscale = 0.1 * IMAGE_WIDTH;
       if ( isTitleAndUnitFontEnabled() )
       {
-        G2.setFont(new Font(getTitleAndUnitFont().getFamily(), getTitleAndUnitFont().getStyle(), getTitleAndUnitFont()
-            .getSize()));
+        // Changed: Make the set font also scale.
+        G2.setFont(new Font(getTitleAndUnitFont().getFamily(), getTitleAndUnitFont().getStyle(),
+            (int) (rawscale * getTitleAndUnitFontScale())));
       }
       else
       {
-        G2.setFont(new Font("Verdana", 0, (int) (0.1 * IMAGE_WIDTH)));
+        G2.setFont(new Font("Verdana", 0, (int) rawscale));
       }
       if ( !getTitle().isEmpty() )
       {

@@ -27,6 +27,34 @@
  */
 package eu.hansolo.steelseries.gauges;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.RenderingHints;
+import java.awt.Transparency;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Path2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JComponent;
+import javax.swing.Timer;
+import javax.swing.border.Border;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.EventListenerList;
+
 import eu.hansolo.steelseries.tools.BackgroundColor;
 import eu.hansolo.steelseries.tools.BackgroundImageFactory;
 import eu.hansolo.steelseries.tools.ColorDef;
@@ -53,32 +81,6 @@ import eu.hansolo.steelseries.tools.ThresholdType;
 import eu.hansolo.steelseries.tools.TickmarkImageFactory;
 import eu.hansolo.steelseries.tools.TickmarkType;
 import eu.hansolo.steelseries.tools.Util;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.RenderingHints;
-import java.awt.Transparency;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.Path2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.JComponent;
-import javax.swing.Timer;
-import javax.swing.border.Border;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.EventListenerList;
 
 /**
  * The "mother" of most of the gauges in the steelseries library.
@@ -2506,6 +2508,17 @@ public abstract class AbstractGauge extends JComponent implements ComponentListe
   public void setTitleAndUnitFontEnabled(final boolean TITLE_AND_UNIT_FONT_ENABLED)
   {
     model.setCustomTitleAndUnitFontEnabled(TITLE_AND_UNIT_FONT_ENABLED);
+    reInitialize();
+  }
+
+  public double getTitleAndUnitFontScale()
+  {
+    return model.getCustomTitleAndUnitFontScale();
+  }
+
+  public void setTitleAndUnitFontScale(double scale)
+  {
+    model.setCustomTitleAndUnitFontScale(scale);
     reInitialize();
   }
 

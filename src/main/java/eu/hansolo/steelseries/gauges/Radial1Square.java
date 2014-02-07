@@ -27,21 +27,6 @@
  */
 package eu.hansolo.steelseries.gauges;
 
-import eu.hansolo.steelseries.tools.BackgroundColor;
-import eu.hansolo.steelseries.tools.ColorDef;
-import eu.hansolo.steelseries.tools.ConicalGradientPaint;
-import eu.hansolo.steelseries.tools.Direction;
-import eu.hansolo.steelseries.tools.FrameDesign;
-import eu.hansolo.steelseries.tools.GaugeType;
-import eu.hansolo.steelseries.tools.GradientWrapper;
-import eu.hansolo.steelseries.tools.Model;
-import eu.hansolo.steelseries.tools.Orientation;
-import eu.hansolo.steelseries.tools.PointerType;
-import eu.hansolo.steelseries.tools.Scaler;
-import eu.hansolo.steelseries.tools.Section;
-import eu.hansolo.steelseries.tools.Shadow;
-import eu.hansolo.steelseries.tools.Util;
-
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -68,6 +53,21 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Random;
+
+import eu.hansolo.steelseries.tools.BackgroundColor;
+import eu.hansolo.steelseries.tools.ColorDef;
+import eu.hansolo.steelseries.tools.ConicalGradientPaint;
+import eu.hansolo.steelseries.tools.Direction;
+import eu.hansolo.steelseries.tools.FrameDesign;
+import eu.hansolo.steelseries.tools.GaugeType;
+import eu.hansolo.steelseries.tools.GradientWrapper;
+import eu.hansolo.steelseries.tools.Model;
+import eu.hansolo.steelseries.tools.Orientation;
+import eu.hansolo.steelseries.tools.PointerType;
+import eu.hansolo.steelseries.tools.Scaler;
+import eu.hansolo.steelseries.tools.Section;
+import eu.hansolo.steelseries.tools.Shadow;
+import eu.hansolo.steelseries.tools.Util;
 
 /**
  *
@@ -551,14 +551,15 @@ public final class Radial1Square extends AbstractRadial
         G2.setColor(getLabelColor());
       }
 
+      double rawscale = 0.04672897196261682 * getGaugeBounds().width;
       // Use custom font if selected
       if ( isTitleAndUnitFontEnabled() )
       {
-        G2.setFont(new Font(getTitleAndUnitFont().getFamily(), 0, (int) (0.04672897196261682 * getGaugeBounds().width)));
+        G2.setFont(new Font(getTitleAndUnitFont().getFamily(), 0, (int) (rawscale * getTitleAndUnitFontScale())));
       }
       else
       {
-        G2.setFont(new Font("Verdana", 0, (int) (0.04672897196261682 * getGaugeBounds().width)));
+        G2.setFont(new Font("Verdana", 0, (int) rawscale));
       }
       final TextLayout TITLE_LAYOUT = new TextLayout(getTitle(), G2.getFont(), RENDER_CONTEXT);
       final Rectangle2D TITLE_BOUNDARY = TITLE_LAYOUT.getBounds();
@@ -1815,12 +1816,12 @@ public final class Radial1Square extends AbstractRadial
     final BufferedImage CLP;
     if ( getCustomBackground() != null && getBackgroundColor() == BackgroundColor.CUSTOM )
     {
-      CLP = Shadow.INSTANCE.createInnerShadow((Shape) GAUGE_BACKGROUND, getCustomBackground(), 0, 0.65f, Color.BLACK, 20,
+      CLP = Shadow.INSTANCE.createInnerShadow(GAUGE_BACKGROUND, getCustomBackground(), 0, 0.65f, Color.BLACK, 20,
           315);
     }
     else
     {
-      CLP = Shadow.INSTANCE.createInnerShadow((Shape) GAUGE_BACKGROUND, backgroundPaint, 0, 0.65f, Color.BLACK, 20, 315);
+      CLP = Shadow.INSTANCE.createInnerShadow(GAUGE_BACKGROUND, backgroundPaint, 0, 0.65f, Color.BLACK, 20, 315);
     }
     G2.drawImage(CLP, GAUGE_BACKGROUND.getBounds().x, GAUGE_BACKGROUND.getBounds().y, null);
 
