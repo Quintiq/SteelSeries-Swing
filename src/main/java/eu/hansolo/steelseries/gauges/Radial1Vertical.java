@@ -27,16 +27,6 @@
  */
 package eu.hansolo.steelseries.gauges;
 
-import eu.hansolo.steelseries.tools.ColorDef;
-import eu.hansolo.steelseries.tools.CustomColorDef;
-import eu.hansolo.steelseries.tools.GaugeType;
-import eu.hansolo.steelseries.tools.Model;
-import eu.hansolo.steelseries.tools.Orientation;
-import eu.hansolo.steelseries.tools.PointerType;
-import eu.hansolo.steelseries.tools.PostPosition;
-import eu.hansolo.steelseries.tools.Section;
-import eu.hansolo.steelseries.tools.Util;
-
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -57,6 +47,16 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+
+import eu.hansolo.steelseries.tools.ColorDef;
+import eu.hansolo.steelseries.tools.CustomColorDef;
+import eu.hansolo.steelseries.tools.GaugeType;
+import eu.hansolo.steelseries.tools.Model;
+import eu.hansolo.steelseries.tools.Orientation;
+import eu.hansolo.steelseries.tools.PointerType;
+import eu.hansolo.steelseries.tools.PostPosition;
+import eu.hansolo.steelseries.tools.Section;
+import eu.hansolo.steelseries.tools.Util;
 
 /**
  *
@@ -402,7 +402,16 @@ public final class Radial1Vertical extends AbstractRadial
       {
         G2.setColor(getLabelColor());
       }
-      G2.setFont(new Font("Verdana", 0, (int) (0.04672897196261682 * getGaugeBounds().width)));
+
+      if ( isTitleAndUnitFontEnabled() )
+      {
+        G2.setFont(getTitleAndUnitFont().deriveFont(
+            (float) (0.04672897196261682 * getGaugeBounds().width * getTitleAndUnitFontScale())));
+      }
+      else
+      {
+        G2.setFont(new Font("Verdana", 0, (int) (0.04672897196261682 * getGaugeBounds().width)));
+      }
       final TextLayout TITLE_LAYOUT = new TextLayout(getTitle(), G2.getFont(), RENDER_CONTEXT);
       final Rectangle2D TITLE_BOUNDARY = TITLE_LAYOUT.getBounds();
       G2.drawString(getTitle(), (float) ((getGaugeBounds().width - TITLE_BOUNDARY.getWidth()) / 2.0), 0.4f
@@ -420,7 +429,16 @@ public final class Radial1Vertical extends AbstractRadial
       {
         G2.setColor(getLabelColor());
       }
-      G2.setFont(new Font("Verdana", 0, (int) (0.04672897196261682 * getGaugeBounds().width)));
+      if ( isTitleAndUnitFontEnabled() )
+      {
+        G2.setFont(getTitleAndUnitFont().deriveFont(
+            (float) (0.04672897196261682 * getGaugeBounds().width * getTitleAndUnitFontScale())));
+      }
+      else
+      {
+        G2.setFont(new Font("Verdana", 0, (int) (0.04672897196261682 * getGaugeBounds().width)));
+      }
+
       final TextLayout UNIT_LAYOUT = new TextLayout(getUnitString(), G2.getFont(), RENDER_CONTEXT);
       final Rectangle2D UNIT_BOUNDARY = UNIT_LAYOUT.getBounds();
       G2.drawString(getUnitString(), (float) ((getGaugeBounds().width - UNIT_BOUNDARY.getWidth()) / 2.0), 0.47f

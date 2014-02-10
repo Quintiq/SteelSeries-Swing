@@ -27,12 +27,13 @@
  */
 package eu.hansolo.steelseries.gauges;
 
-import eu.hansolo.steelseries.tools.LcdColor;
-import eu.hansolo.steelseries.tools.NumberSystem;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Paint;
 import java.awt.Rectangle;
+
+import eu.hansolo.steelseries.tools.LcdColor;
+import eu.hansolo.steelseries.tools.NumberSystem;
 
 /**
  *

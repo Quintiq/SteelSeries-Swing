@@ -103,6 +103,7 @@ public final class DisplaySingle extends JComponent implements Lcd, ActionListen
   private boolean                           digitalFont;
   private boolean                           useCustomLcdUnitFont;
   private Font                              customLcdUnitFont;
+  private float                             customLcdUnitFontScale;
   private Font                              lcdValueFont;
   private Font                              lcdUnitFont;
   private String                            lcdInfoString;
@@ -122,6 +123,7 @@ public final class DisplaySingle extends JComponent implements Lcd, ActionListen
   private TextLayout                        valueLayout;
   private final Rectangle2D                 VALUE_BOUNDARY      = new Rectangle2D.Double();
   private Font                              lcdInfoFont;
+  private float                             lcdInfoFontScale;
   private TextLayout                        infoLayout;
   private final Rectangle2D                 INFO_BOUNDARY       = new Rectangle2D.Double();
   private boolean                           sectionsVisible;
@@ -212,9 +214,11 @@ public final class DisplaySingle extends JComponent implements Lcd, ActionListen
     useCustomLcdUnitFont = false;
     lcdInfoString = "";
     customLcdUnitFont = new Font("Verdana", 0, 24);
+    customLcdUnitFontScale = 1;
     LCD_STANDARD_FONT = new Font("Verdana", 0, 24);
     LCD_DIGITAL_FONT = Util.INSTANCE.getDigitalFont().deriveFont(24).deriveFont(Font.PLAIN);
     lcdInfoFont = new Font("Verdana", 0, 24);
+    lcdInfoFontScale = 1;
     numberSystem = NumberSystem.DEC;
     DISABLED_COLOR = new Color(102, 102, 102, 178);
     timeline = new Timeline(this);
@@ -286,7 +290,7 @@ public final class DisplaySingle extends JComponent implements Lcd, ActionListen
       lcdValueFont = LCD_DIGITAL_FONT.deriveFont(0.7f * getInnerBounds().height).deriveFont(Font.PLAIN);
       if ( useCustomLcdUnitFont )
       {
-        lcdUnitFont = customLcdUnitFont.deriveFont(0.2f * getInnerBounds().height);
+        lcdUnitFont = customLcdUnitFont.deriveFont(0.2f * getInnerBounds().height * customLcdUnitFontScale);
       }
       else
       {
@@ -298,14 +302,14 @@ public final class DisplaySingle extends JComponent implements Lcd, ActionListen
       lcdValueFont = LCD_STANDARD_FONT.deriveFont(0.625f * getInnerBounds().height);
       if ( useCustomLcdUnitFont )
       {
-        lcdUnitFont = customLcdUnitFont.deriveFont(0.2f * getInnerBounds().height);
+        lcdUnitFont = customLcdUnitFont.deriveFont(0.2f * getInnerBounds().height * customLcdUnitFontScale);
       }
       else
       {
         lcdUnitFont = LCD_STANDARD_FONT.deriveFont(0.2f * getInnerBounds().height);
       }
     }
-    lcdInfoFont = LCD_STANDARD_FONT.deriveFont(Font.BOLD, 0.18f * getInnerBounds().height);
+    lcdInfoFont = lcdInfoFont.deriveFont(Font.BOLD, 0.18f * getInnerBounds().height * lcdInfoFontScale);
 
     if ( lcdThresholdImage != null )
     {
@@ -1018,6 +1022,16 @@ public final class DisplaySingle extends JComponent implements Lcd, ActionListen
     repaint(getInnerBounds());
   }
 
+  public float getCustomLcdUnitFontScale()
+  {
+    return customLcdUnitFontScale;
+  }
+
+  public void setCustomLcdUnitFontScale(float customLcdUnitFontScale)
+  {
+    this.customLcdUnitFontScale = customLcdUnitFontScale;
+  }
+
   @Override
   public void setLcdScientificFormat(final boolean LCD_SCIENTIFIC_FORMAT)
   {
@@ -1203,6 +1217,17 @@ public final class DisplaySingle extends JComponent implements Lcd, ActionListen
   public void setLcdInfoFont(final Font LCD_INFO_FONT)
   {
     lcdInfoFont = LCD_INFO_FONT;
+    repaint(getInnerBounds());
+  }
+
+  public float getLcdInfoFontScale()
+  {
+    return lcdInfoFontScale;
+  }
+
+  public void setLcdInfoFontScale(float lcdInfoFontScale)
+  {
+    this.lcdInfoFontScale = lcdInfoFontScale;
     repaint(getInnerBounds());
   }
 
